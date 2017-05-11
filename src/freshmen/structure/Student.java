@@ -5,7 +5,6 @@ public class Student extends Human {
     private int activities = 0;
     private int popularityLevel = 0;
     private int ratingLevelFromSchool = 0;
-//    private int commonRating = 0;
     private boolean isHeadOfGroup = false;
 
     public Student(String firstName, String lastName, int activities, int popularityLevel, int ratingLevelFromSchool) {
@@ -13,7 +12,6 @@ public class Student extends Human {
         this.activities = activities;
         this.popularityLevel = popularityLevel;
         this.ratingLevelFromSchool = ratingLevelFromSchool;
-//        commonRating = activities + popularityLevel + ratingLevelFromSchool;
     }
 
     public int getCommonRating() {
