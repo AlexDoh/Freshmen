@@ -1,14 +1,14 @@
-package Freshmen;
+package freshmen.structure;
 
-import static Freshmen.Example.scanner;
+import static freshmen.app.FreshmenApp.scanner;
 
 public class Professor extends Human {
 
     private String password;
     private String subject;
 
-    public Professor(String name, String surname, String subject, String password) {
-        super(name, surname);
+    public Professor(String firstName, String lastNname, String subject, String password) {
+        super(firstName, lastNname);
         this.subject = subject;
         this.password = password;
     }
@@ -24,6 +24,7 @@ public class Professor extends Human {
         } else {
             System.out.println("The password is incorrect!");
             System.exit(0);
-        }return password;
+        }
+        return password;
     }
 }

@@ -1,9 +1,9 @@
-package Freshmen;
+package freshmen.structure;
+
+import static freshmen.app.FreshmenApp.scanner;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static Freshmen.Example.scanner;
 
 public class Lecture {
 

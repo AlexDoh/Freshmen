@@ -1,4 +1,4 @@
-package Freshmen;
+package freshmen.structure;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +6,6 @@ import java.util.Set;
 public class Group {
 
     private String name;
-    private Student headOfTheGroup;
     private Set<Student> students = new HashSet<>();
 
     public Group(String name) {
@@ -31,11 +30,22 @@ public class Group {
                 maxS = s;
             }
         }
-        headOfTheGroup = maxS;
+        maxS.setHeadOfGroup();
+
+        for (Student s : students) {
+            if (s.getFullName().equals(maxS.getFullName())) {
+                s.setHeadOfGroup();
+            }
+        }
     }
 
     public Student getHeadOfTheGroup() {
-        return headOfTheGroup;
+        for (Student s : students) {
+            if (s.getHeadOfGroup()) {
+                return s;
+            }
+        }
+        return null;
     }
 
     public Set<Student> getStudents() {

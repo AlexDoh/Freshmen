@@ -1,12 +1,12 @@
 # Simple console program - "Freshmen".
 
-This program can choose head of students' group and allow to check absent students for professor.
+This program can choose head of students' group and allow to check absent students for a professor.
 To use it follow with the next steps:
 
-1. Specify the group, which are currently on lecture and press Enter button.
-2. Specify 1 if you are student and 2 if you are professor and press Enter button.
+1. Specify the group, which are currently on a lecture and press Enter button.
+2. Specify 1 if you are a student and 2 if you are a professor and press Enter button.
 
-2.1. You will receive name of head of your group, who was chosen by personal skills: activities, popularity and rating.
+2.1. You will receive full name of the head of your group, who has been chosen by personal skills: activities, popularity and rating.
 
 2.2.1. Specify your full name and press Enter button.
 2.2.2. Specify your password and press Enter button.
