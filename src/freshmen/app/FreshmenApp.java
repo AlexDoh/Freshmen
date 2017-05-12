@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class FreshmenApp {
 
@@ -20,6 +24,8 @@ public class FreshmenApp {
     public static final Scanner scanner = new Scanner(System.in);
 
     private static int occupation;
+    private static int groupsCount = 1;
+    private static int lecturesCount = 1;
     private static Group group;
 
     public static void main(String[] args) {
@@ -39,51 +45,97 @@ public class FreshmenApp {
     private static void addExampleData() {
         addExampleStudents();
         addExampleProfessors();
-        addExampleGroups();
-        addExampleLectures();
+        addExampleGroup();
+        addExampleGroup();
+        addExampleLecture();
+        addExampleLecture();
     }
 
     private static void addExampleStudents(){
         Student student;
-        student = new Student("John", "Doe", 44, 50, 23);
-        students.put(student.toString(), student);
-        student = new Student("Jane", "Doe", 87, 12, 70);
-        students.put(student.toString(), student);
-        student = new Student("Jack", "Jameson", 94, 5, 20);
-        students.put(student.toString(), student);
-        student = new Student("Janet", "Smith", 43, 87, 15);
-        students.put(student.toString(), student);
-        student = new Student("Jim", "Wilson", 67, 12, 89);
-        students.put(student.toString(), student);
+        try {
+            BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students.txt"));
+            String line;
+            while ((line = readerStudents.readLine()) != null){
+                String[] parameters = line.split(" ");
+                student = new Student(parameters[0],parameters[1], Integer.parseInt(parameters[2]), Integer.parseInt(parameters[3]), Integer.parseInt(parameters[4]));
+                students.put(student.toString(), student);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File students.txt is missing! Please put the file to src/freshmen/data/ and restart the program.");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("File students.txt is corrupted! Please put to the file correct values of students.");
+            System.exit(0);
+        }
     }
 
     private static void addExampleProfessors(){
         Professor professor;
-
-        professor = new Professor("Marshal", "Texas", "Programming", "s0aP");
-        professors.put(professor.toString().toLowerCase(), professor);
+        try {
+            BufferedReader readerProfessors = new BufferedReader(new FileReader("src/freshmen/data/professors.txt"));
+            String line;
+            while ((line = readerProfessors.readLine()) != null){
+                String[] parameters = line.split(" ");
+                professor = new Professor(parameters[0],parameters[1], parameters[2],
+                        parameters[3]);
+                professors.put(professor.toString().toLowerCase(), professor);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File professors.txt is missing! Please put the file to src/freshmen/data/ and restart the program.");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("File professors.txt is corrupted! Please put to the file correct values pf professors.");
+            System.exit(0);
+        }
     }
 
-    private static void addExampleGroups(){
-        Group group1 = new Group("P-501");
-        group1.addStudent(students.get("John Doe"));
-        group1.addStudent(students.get("Jane Doe"));
-        group1.addStudent(students.get("Jack Jameson"));
+    private static void addExampleGroup(){
+        try {
+            BufferedReader readerGroup = new BufferedReader(new FileReader("src/freshmen/data/groups.txt"));
+            String line = null;
+            for(int i = 1; i <= groupsCount; i++){
+                line = readerGroup.readLine();
+            }
+            Group group = new Group(line);
 
-        Group group2 = new Group("P-502");
-        group2.addStudent(students.get("Janet Smith"));
-        group2.addStudent(students.get("Jim Wilson"));
-
-        groups.put(group1.toString().toLowerCase(), group1);
-        groups.put(group2.toString().toLowerCase(), group2);
+            BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students_for_group" + groupsCount + ".txt"));
+            while ((line = readerStudents.readLine()) != null){
+                group.addStudent(students.get(line));
+            }
+            groups.put(group.toString().toLowerCase(), group);
+            groupsCount++;
+        } catch (FileNotFoundException e) {
+            System.out.println("Files groups.txt and/or students_for_group" + groupsCount + ".txt are missing! Please put file(s) to src/freshmen/data/ and restart the program.");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("Files groups.txt and/or students_for_group" + groupsCount + ".txt are corrupted! Please put to the file(s) correct values of students and/or students.");
+            System.exit(0);
+        }
     }
 
-    private static void addExampleLectures(){
-        Lecture lecture1 = new Lecture("OOP:p-501", "OOP", groups.get("p-501"));
-        lectures.put(lecture1.toString().toLowerCase(), lecture1);
-
-        Lecture lecture2 = new Lecture("OOP:p-502", "OOP", groups.get("p-502"));
-        lectures.put(lecture2.toString().toLowerCase(), lecture2);
+    private static void addExampleLecture(){
+        try {
+            BufferedReader readerLecture = new BufferedReader(new FileReader("src/freshmen/data/lectures.txt"));
+            String line = null;
+            for(int i = 1; i <= lecturesCount; i++){
+                line = readerLecture.readLine();
+            }
+            String[] parameters = line.split(" ");
+            Lecture lecture = new Lecture(parameters[0] + ":" + parameters[1], parameters[0], groups.get(parameters[1]));
+            lectures.put(lecture.toString().toLowerCase(), lecture);
+            lecturesCount++;
+        } catch (NullPointerException e) {
+            System.out.println("File lectures.txt is empty! Please put to the file correct values of lectures.");
+            System.exit(0);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File lectures.txt is missing! Please put file to src/freshmen/data/ and restart the program.");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("File lectures.txt is corrupted! Please put to the file correct values of lectures.");
+            System.exit(0);
+        }
     }
 
     public static void setGroup(){
