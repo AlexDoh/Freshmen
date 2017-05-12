@@ -33,10 +33,10 @@ public class FreshmenApp {
         setGroup();
         setOccupation();
 
-        if(FreshmenApp.occupation == 1){
+        if (FreshmenApp.occupation == 1) {
             loginAsStudent();
         }
-        if(FreshmenApp.occupation == 2){
+        if (FreshmenApp.occupation == 2) {
             loginAsProfessor();
         }
 
@@ -51,14 +51,14 @@ public class FreshmenApp {
         addExampleLecture();
     }
 
-    private static void addExampleStudents(){
+    private static void addExampleStudents() {
         Student student;
         try {
             BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students.txt"));
             String line;
-            while ((line = readerStudents.readLine()) != null){
+            while ((line = readerStudents.readLine()) != null) {
                 String[] parameters = line.split(" ");
-                student = new Student(parameters[0],parameters[1], Integer.parseInt(parameters[2]), Integer.parseInt(parameters[3]), Integer.parseInt(parameters[4]));
+                student = new Student(parameters[0], parameters[1], Integer.parseInt(parameters[2]), Integer.parseInt(parameters[3]), Integer.parseInt(parameters[4]));
                 students.put(student.toString(), student);
             }
         } catch (FileNotFoundException e) {
@@ -70,14 +70,14 @@ public class FreshmenApp {
         }
     }
 
-    private static void addExampleProfessors(){
+    private static void addExampleProfessors() {
         Professor professor;
         try {
             BufferedReader readerProfessors = new BufferedReader(new FileReader("src/freshmen/data/professors.txt"));
             String line;
-            while ((line = readerProfessors.readLine()) != null){
+            while ((line = readerProfessors.readLine()) != null) {
                 String[] parameters = line.split(" ");
-                professor = new Professor(parameters[0],parameters[1], parameters[2],
+                professor = new Professor(parameters[0], parameters[1], parameters[2],
                         parameters[3]);
                 professors.put(professor.toString().toLowerCase(), professor);
             }
@@ -90,17 +90,17 @@ public class FreshmenApp {
         }
     }
 
-    private static void addExampleGroup(){
+    private static void addExampleGroup() {
         try {
             BufferedReader readerGroup = new BufferedReader(new FileReader("src/freshmen/data/groups.txt"));
             String line = null;
-            for(int i = 1; i <= groupsCount; i++){
+            for (int i = 1; i <= groupsCount; i++) {
                 line = readerGroup.readLine();
             }
             Group group = new Group(line);
 
             BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students_for_group" + groupsCount + ".txt"));
-            while ((line = readerStudents.readLine()) != null){
+            while ((line = readerStudents.readLine()) != null) {
                 group.addStudent(students.get(line));
             }
             groups.put(group.toString().toLowerCase(), group);
@@ -114,11 +114,11 @@ public class FreshmenApp {
         }
     }
 
-    private static void addExampleLecture(){
+    private static void addExampleLecture() {
         try {
             BufferedReader readerLecture = new BufferedReader(new FileReader("src/freshmen/data/lectures.txt"));
             String line = null;
-            for(int i = 1; i <= lecturesCount; i++){
+            for (int i = 1; i <= lecturesCount; i++) {
                 line = readerLecture.readLine();
             }
             String[] parameters = line.split(" ");
@@ -128,8 +128,7 @@ public class FreshmenApp {
         } catch (NullPointerException e) {
             System.out.println("File lectures.txt is empty! Please put to the file correct values of lectures.");
             System.exit(0);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("File lectures.txt is missing! Please put file to src/freshmen/data/ and restart the program.");
             System.exit(0);
         } catch (IOException e) {
@@ -138,7 +137,7 @@ public class FreshmenApp {
         }
     }
 
-    public static void setGroup(){
+    public static void setGroup() {
         System.out.println("Enter your group name:");
 
         String groupName = scanner.nextLine().toLowerCase();
@@ -152,32 +151,32 @@ public class FreshmenApp {
 
     }
 
-    public static void setOccupation(){
+    public static void setOccupation() {
         System.out.println("Who are you, student ot professor?");
         System.out.println("Enter \"1\" for Student");
         System.out.println("Enter \"2\" for Professor");
-        try{
+        try {
             FreshmenApp.occupation = scanner.nextInt();
             scanner.nextLine();
-            if(FreshmenApp.occupation != 1 && FreshmenApp.occupation != 2){
+            if (FreshmenApp.occupation != 1 && FreshmenApp.occupation != 2) {
                 System.out.println("You entered wrong value, please try again, enter 1 for student and 2 for professor");
                 System.exit(0);
             }
-        } catch(InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("You entered wrong value, please try again, enter 1 for student and 2 for professor");
             System.exit(0);
         }
 
     }
 
-    public static void loginAsStudent(){
+    public static void loginAsStudent() {
         FreshmenApp.group.defineHeadOfGroup();
         System.out.print("The head of group is ");
         System.out.print(FreshmenApp.group.getHeadOfTheGroup());
         System.out.println(" due to highest amount of activities, popularity and rating");
     }
 
-    public static void loginAsProfessor(){
+    public static void loginAsProfessor() {
         System.out.println("Please enter your full name:");
         String professorName = scanner.nextLine().toLowerCase();
         Professor selectedProfessor = professors.get(professorName.toLowerCase());
