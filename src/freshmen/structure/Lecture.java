@@ -1,9 +1,11 @@
 package freshmen.structure;
 
-import static freshmen.app.FreshmenApp.scanner;
+import static freshmen.app.FreshmenApp.reader;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
 
 public class Lecture {
 
@@ -25,19 +27,24 @@ public class Lecture {
             System.out.print("Does ");
             System.out.print(s.getFullName());
             System.out.println(" present today? (Y/N)");
-            String stud = scanner.nextLine().toLowerCase();
-            switch (stud) {
-                case "y":
-                case "yes":
-                    studentsPresence.add(s);
-                    presenceCounter++;
-                    break;
-                case "n":
-                case "no":
-                    break;
-                default:
-                    System.out.println("You have entered a wrong value, please launch the program again");
-                    System.exit(0);
+            try {
+                String stud = reader.readLine().toLowerCase();
+                switch (stud) {
+                    case "y":
+                    case "yes":
+                        studentsPresence.add(s);
+                        presenceCounter++;
+                        break;
+                    case "n":
+                    case "no":
+                        break;
+                    default:
+                        System.out.println("You have entered a wrong value, please launch the program again");
+                        System.exit(0);
+                }
+            } catch (IOException e) {
+                System.out.println("You have entered a wrong value, please launch the program again");
+                System.exit(0);
             }
         }
     }
@@ -58,6 +65,6 @@ public class Lecture {
 
     @Override
     public String toString() {
-        return id;
+        return id.replaceAll("\\s+", "");
     }
 }

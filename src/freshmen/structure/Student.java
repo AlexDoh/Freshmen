@@ -18,11 +18,11 @@ public class Student extends Human {
         return activities + popularityLevel + ratingLevelFromSchool;
     }
 
-    public void setHeadOfGroup(){
+    public void setHeadOfGroup() {
         this.isHeadOfGroup = true;
     }
 
-    public boolean getHeadOfGroup(){
+    public boolean getHeadOfGroup() {
         return this.isHeadOfGroup;
     }
 }

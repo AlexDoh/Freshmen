@@ -15,9 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
-import java.util.Scanner;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,11 +27,9 @@ public class FreshmenApp {
     private static Map<String, Group> groups = new HashMap<>();
     private static Map<String, Lecture> lectures = new HashMap<>();
 
-    public static final Scanner scanner = new Scanner(System.in);
+    public static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     private static int occupation;
-    private static int groupsCount = 1;
-    private static int lecturesCount = 1;
     private static Group group;
 
     public static void main(String[] args) {
@@ -53,10 +49,8 @@ public class FreshmenApp {
     private static void addExampleData() {
         addExampleStudents();
         addExampleProfessors();
-        addExampleGroup();
-        addExampleGroup();
-        addExampleLecture();
-        addExampleLecture();
+        addExampleGroups();
+        addExampleLectures();
     }
 
     private static void addExampleStudents() {
@@ -64,15 +58,13 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with students (example of data is located at " +
                     "src/freshmen/data/students.xml)");
-            BufferedReader readerStudents = new BufferedReader(new InputStreamReader(System.in));
-            String path = readerStudents.readLine();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            String path = reader.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(path);
             NodeList studentNodes = document.getElementsByTagName("student");
 
-            for(int i = 0;i < studentNodes.getLength();i++){
+            for (int i = 0; i < studentNodes.getLength(); i++) {
                 Node node = studentNodes.item(i);
                 student = new Student(node.getChildNodes().item(1).getTextContent(), node.getChildNodes()
                         .item(3).getTextContent(), Integer.parseInt(node.getChildNodes().item(5)
@@ -88,13 +80,10 @@ public class FreshmenApp {
         } catch (IOException e) {
             System.out.println("File students.xml is corrupted! Please put to the file correct values of students.");
             System.exit(0);
-        } catch (ParserConfigurationException | SAXException e){
+        } catch (ParserConfigurationException | SAXException e) {
             System.out.println("XML Parser Configuration is corrupted!");
             e.printStackTrace();
             System.exit(0);
-        }
-        for(String s : students.keySet()){
-            System.out.println(s);
         }
     }
 
@@ -103,15 +92,13 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with professors (example of data is located at " +
                     "src/freshmen/data/professors.xml)");
-            BufferedReader readerProfessors = new BufferedReader(new InputStreamReader(System.in));
-            String path = readerProfessors.readLine();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            String path = reader.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(path);
             NodeList professorNodes = document.getElementsByTagName("professor");
 
-            for(int i = 0;i < professorNodes.getLength();i++){
+            for (int i = 0; i < professorNodes.getLength(); i++) {
                 Node node = professorNodes.item(i);
                 professor = new Professor(node.getChildNodes().item(1).getTextContent(), node.getChildNodes()
                         .item(3).getTextContent(), node.getChildNodes().item(5)
@@ -119,61 +106,97 @@ public class FreshmenApp {
                 professors.put(professor.toString().toLowerCase(), professor);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File professors.xml is missing! Please put the file to src/freshmen/data/ and restart the program.");
+            System.out.println("File professors.xml is missing! Please put the file to src/freshmen/data/ and restart" +
+                    " the program.");
             System.exit(0);
         } catch (IOException e) {
             System.out.println("File professors.xml is corrupted! Please put to the file correct values pf professors.");
             System.exit(0);
-        } catch (ParserConfigurationException | SAXException e){
+        } catch (ParserConfigurationException | SAXException e) {
             System.out.println("XML Parser Configuration is corrupted!");
             e.printStackTrace();
             System.exit(0);
         }
     }
 
-    private static void addExampleGroup() {
+    private static void addExampleGroups() {
         try {
-            BufferedReader readerGroup = new BufferedReader(new FileReader("src/freshmen/data/groups.txt"));
-            String line = null;
-            for (int i = 1; i <= groupsCount; i++) {
-                line = readerGroup.readLine();
-            }
-            Group group = new Group(line);
+            System.out.println("Enter path to .xml file with groups (example of data is located at " +
+                    "src/freshmen/data/groups.xml)");
+            String pathToGroup = reader.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document documentOfGroups = documentBuilder.parse(pathToGroup);
+            NodeList groupNodes = documentOfGroups.getElementsByTagName("group");
 
-            BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students_for_group" + groupsCount + ".txt"));
-            while ((line = readerStudents.readLine()) != null) {
-                group.addStudent(students.get(line));
+            for (int i = 0; i < groupNodes.getLength(); i++) {
+                Group group = new Group(groupNodes.item(i).getTextContent());
+
+                System.out.print("Enter path to .xml file with students for group - ");
+                System.out.print(group.toString());
+                System.out.print(" (example of data is located at src/freshmen/data/students_for_group");
+                System.out.print(i + 1);
+                System.out.println(".xml)");
+                String pathToStudents = reader.readLine();
+                DocumentBuilderFactory documentBuilderFactory1 = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder1 = documentBuilderFactory1.newDocumentBuilder();
+                Document documentOfStudents = documentBuilder1.parse(pathToStudents);
+                NodeList studentNodes = documentOfStudents.getElementsByTagName("student");
+
+                for (int j = 0; j < studentNodes.getLength(); j++) {
+                    Node node = studentNodes.item(j);
+                    group.addStudent(students.get(node.getChildNodes().item(1).getTextContent()));
+                }
+                groups.put(group.toString().toLowerCase(), group);
             }
-            groups.put(group.toString().toLowerCase(), group);
-            groupsCount++;
+
         } catch (FileNotFoundException e) {
-            System.out.println("Files groups.txt and/or students_for_group" + groupsCount + ".txt are missing! Please put file(s) to src/freshmen/data/ and restart the program.");
+            System.out.println("Files groups.xml and/or students_for_group<number_of_group>.xml are missing! " +
+                    "Please put file(s) to src/freshmen/data/ and restart the program.");
             System.exit(0);
         } catch (IOException e) {
-            System.out.println("Files groups.txt and/or students_for_group" + groupsCount + ".txt are corrupted! Please put to the file(s) correct values of students and/or students.");
+            System.out.println("Files groups.xml and/or students_for_group<number_of_group>.xml are corrupted! " +
+                    "Please put to the file(s) correct values of students and/or students.");
+            System.exit(0);
+        } catch (ParserConfigurationException | SAXException e) {
+            System.out.println("XML Parser Configuration is corrupted!");
+            e.printStackTrace();
             System.exit(0);
         }
     }
 
-    private static void addExampleLecture() {
+    private static void addExampleLectures() {
         try {
-            BufferedReader readerLecture = new BufferedReader(new FileReader("src/freshmen/data/lectures.txt"));
-            String line = null;
-            for (int i = 1; i <= lecturesCount; i++) {
-                line = readerLecture.readLine();
+            System.out.println("Enter path to .xml file with lectures (example of data is located at " +
+                    "src/freshmen/data/lectures.xml)");
+            String pathToGroup = reader.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document documentOfLectures = documentBuilder.parse(pathToGroup);
+            NodeList lectureNodes = documentOfLectures.getElementsByTagName("lecture");
+
+            for (int i = 0; i < lectureNodes.getLength(); i++) {
+                Node lectureNode = lectureNodes.item(i);
+
+                Lecture lecture = new Lecture(lectureNode.getChildNodes().item(1).getTextContent() + ":"
+                        + lectureNode.getChildNodes().item(3).getTextContent(), lectureNode.getChildNodes()
+                        .item(1).getTextContent(), groups.get(lectureNode.getChildNodes()
+                        .item(3).getTextContent().toLowerCase()));
+                lectures.put(lecture.toString().toLowerCase(), lecture);
             }
-            String[] parameters = line.split(" ");
-            Lecture lecture = new Lecture(parameters[0] + ":" + parameters[1], parameters[0], groups.get(parameters[1]));
-            lectures.put(lecture.toString().toLowerCase(), lecture);
-            lecturesCount++;
         } catch (NullPointerException e) {
-            System.out.println("File lectures.txt is empty! Please put to the file correct values of lectures.");
+            System.out.println("File lectures.xml is empty! Please put to the file correct values of lectures.");
             System.exit(0);
         } catch (FileNotFoundException e) {
-            System.out.println("File lectures.txt is missing! Please put file to src/freshmen/data/ and restart the program.");
+            System.out.println("File lectures.xml is missing! Please put file to src/freshmen/data/ and restart" +
+                    " the program.");
             System.exit(0);
         } catch (IOException e) {
             System.out.println("File lectures.txt is corrupted! Please put to the file correct values of lectures.");
+            System.exit(0);
+        } catch (ParserConfigurationException | SAXException e) {
+            System.out.println("XML Parser Configuration is corrupted!");
+            e.printStackTrace();
             System.exit(0);
         }
     }
@@ -181,7 +204,13 @@ public class FreshmenApp {
     public static void setGroup() {
         System.out.println("Enter your group name:");
 
-        String groupName = scanner.nextLine().toLowerCase();
+        String groupName = null;
+        try {
+            groupName = reader.readLine().toLowerCase();
+        } catch (IOException e) {
+            System.out.println("Input was failed. Please restart the program again.");
+            System.exit(0);
+        }
         FreshmenApp.group = groups.get(groupName.toLowerCase());
 
         if (FreshmenApp.group == null) {
@@ -197,10 +226,15 @@ public class FreshmenApp {
         System.out.println("Enter \"1\" for Student");
         System.out.println("Enter \"2\" for Professor");
         try {
-            FreshmenApp.occupation = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                FreshmenApp.occupation = Integer.parseInt(reader.readLine());
+            } catch (IOException e) {
+                System.out.println("Input was failed. Please restart the program again.");
+                System.exit(0);
+            }
             if (FreshmenApp.occupation != 1 && FreshmenApp.occupation != 2) {
-                System.out.println("You entered wrong value, please try again, enter 1 for student and 2 for professor");
+                System.out.println("You entered wrong value, please try again," +
+                        " enter 1 for student and 2 for professor");
                 System.exit(0);
             }
         } catch (InputMismatchException e) {
@@ -219,7 +253,13 @@ public class FreshmenApp {
 
     public static void loginAsProfessor() {
         System.out.println("Please enter your full name:");
-        String professorName = scanner.nextLine().toLowerCase();
+        String professorName = null;
+        try {
+            professorName = reader.readLine().toLowerCase();
+        } catch (IOException e) {
+            System.out.println("Input was failed. Please restart the program again.");
+            System.exit(0);
+        }
         Professor selectedProfessor = professors.get(professorName.toLowerCase());
 
         if (selectedProfessor == null) {
@@ -235,11 +275,18 @@ public class FreshmenApp {
         System.out.print("Please enter a name of the lecture for group ");
         System.out.print(FreshmenApp.group);
         System.out.println(" in such format (lecture:group) :");
-        String lectureName = scanner.nextLine().toLowerCase();
+        String lectureName = null;
+        try {
+            lectureName = reader.readLine().toLowerCase();
+        } catch (IOException e) {
+            System.out.println("Input was failed. Please restart the program again.");
+            System.exit(0);
+        }
         Lecture selectedLecture = lectures.get(lectureName.toLowerCase());
 
         if (selectedLecture == null) {
-            System.out.println("There is no such title of a lecture in student program, please run program again and enter correct title");
+            System.out.println("There is no such title of a lecture in student program," +
+                    " please run program again and enter correct title");
             System.exit(0);
         }
 

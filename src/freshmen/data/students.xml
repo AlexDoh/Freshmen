@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <firstName>John</firstName>
+        <lastName>Doe</lastName>
+        <activities>44</activities>
+        <popularityLevel>50</popularityLevel>
+        <ratingLevelFromSchool>23</ratingLevelFromSchool>
+    </student>
+    <student>
+        <firstName>Jane</firstName>
+        <lastName>Doe</lastName>
+        <activities>87</activities>
+        <popularityLevel>12</popularityLevel>
+        <ratingLevelFromSchool>70</ratingLevelFromSchool>
+    </student>
+    <student>
+        <firstName>Jack</firstName>
+        <lastName>Jameson</lastName>
+        <activities>94</activities>
+        <popularityLevel>5</popularityLevel>
+        <ratingLevelFromSchool>20</ratingLevelFromSchool>
+    </student>
+    <student>
+        <firstName>Janet</firstName>
+        <lastName>Smith</lastName>
+        <activities>43</activities>
+        <popularityLevel>87</popularityLevel>
+        <ratingLevelFromSchool>15</ratingLevelFromSchool>
+    </student>
+    <student>
+        <firstName>Jim</firstName>
+        <lastName>Wilson</lastName>
+        <activities>67</activities>
+        <popularityLevel>12</popularityLevel>
+        <ratingLevelFromSchool>89</ratingLevelFromSchool>
+    </student>
+</students>

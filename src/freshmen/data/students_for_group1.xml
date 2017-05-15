@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<students>
+    <student>
+        <fullName>John Doe</fullName>
+    </student>
+    <student>
+        <fullName>Jane Doe</fullName>
+    </student>
+    <student>
+        <fullName>Jack Jameson</fullName>
+    </student>
+</students>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lectures>
+    <lecture>
+        <name>OOP</name>
+        <group>P-501</group>
+    </lecture>
+    <lecture>
+        <name>OOP</name>
+        <group>P-502</group>
+    </lecture>
+</lectures>

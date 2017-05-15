@@ -1,6 +1,8 @@
 package freshmen.structure;
 
-import static freshmen.app.FreshmenApp.scanner;
+import java.io.IOException;
+
+import static freshmen.app.FreshmenApp.reader;
 
 public class Professor extends Human {
 
@@ -18,13 +20,20 @@ public class Professor extends Human {
     }
 
     public String checkPassword() {
-        String pass = scanner.nextLine();
-        if (pass.equals(password)) {
+        try {
+            String pass = reader.readLine();
+            if (pass.equals(password)) {
+                return password;
+            } else {
+                System.out.println("The password is incorrect!");
+                System.exit(0);
+            }
             return password;
-        } else {
-            System.out.println("The password is incorrect!");
+        } catch (IOException e) {
+            System.out.println("Input was failed. Please restart the program again.");
             System.exit(0);
+            return null;
         }
-        return password;
+
     }
 }
