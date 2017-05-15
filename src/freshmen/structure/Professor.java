@@ -7,8 +7,8 @@ public class Professor extends Human {
     private String password;
     private String subject;
 
-    public Professor(String firstName, String lastNname, String subject, String password) {
-        super(firstName, lastNname);
+    public Professor(String firstName, String lastName, String subject, String password) {
+        super(firstName, lastName);
         this.subject = subject;
         this.password = password;
     }

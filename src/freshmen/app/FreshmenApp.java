@@ -4,13 +4,21 @@ import freshmen.structure.Group;
 import freshmen.structure.Lecture;
 import freshmen.structure.Professor;
 import freshmen.structure.Student;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -54,38 +62,71 @@ public class FreshmenApp {
     private static void addExampleStudents() {
         Student student;
         try {
-            BufferedReader readerStudents = new BufferedReader(new FileReader("src/freshmen/data/students.txt"));
-            String line;
-            while ((line = readerStudents.readLine()) != null) {
-                String[] parameters = line.split(" ");
-                student = new Student(parameters[0], parameters[1], Integer.parseInt(parameters[2]), Integer.parseInt(parameters[3]), Integer.parseInt(parameters[4]));
+            System.out.println("Enter path to .xml file with students (example of data is located at " +
+                    "src/freshmen/data/students.xml)");
+            BufferedReader readerStudents = new BufferedReader(new InputStreamReader(System.in));
+            String path = readerStudents.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(path);
+            NodeList studentNodes = document.getElementsByTagName("student");
+
+            for(int i = 0;i < studentNodes.getLength();i++){
+                Node node = studentNodes.item(i);
+                student = new Student(node.getChildNodes().item(1).getTextContent(), node.getChildNodes()
+                        .item(3).getTextContent(), Integer.parseInt(node.getChildNodes().item(5)
+                        .getTextContent()),
+                        Integer.parseInt(node.getChildNodes().item(7).getTextContent()),
+                        Integer.parseInt(node.getChildNodes().item(9).getTextContent()));
                 students.put(student.toString(), student);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File students.txt is missing! Please put the file to src/freshmen/data/ and restart the program.");
+            System.out.println("File students.xml is missing! Please put the file to src/freshmen/data/ and restart" +
+                    " the program.");
             System.exit(0);
         } catch (IOException e) {
-            System.out.println("File students.txt is corrupted! Please put to the file correct values of students.");
+            System.out.println("File students.xml is corrupted! Please put to the file correct values of students.");
             System.exit(0);
+        } catch (ParserConfigurationException | SAXException e){
+            System.out.println("XML Parser Configuration is corrupted!");
+            e.printStackTrace();
+            System.exit(0);
+        }
+        for(String s : students.keySet()){
+            System.out.println(s);
         }
     }
 
     private static void addExampleProfessors() {
         Professor professor;
         try {
-            BufferedReader readerProfessors = new BufferedReader(new FileReader("src/freshmen/data/professors.txt"));
-            String line;
-            while ((line = readerProfessors.readLine()) != null) {
-                String[] parameters = line.split(" ");
-                professor = new Professor(parameters[0], parameters[1], parameters[2],
-                        parameters[3]);
+            System.out.println("Enter path to .xml file with professors (example of data is located at " +
+                    "src/freshmen/data/professors.xml)");
+            BufferedReader readerProfessors = new BufferedReader(new InputStreamReader(System.in));
+            String path = readerProfessors.readLine();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(path);
+            NodeList professorNodes = document.getElementsByTagName("professor");
+
+            for(int i = 0;i < professorNodes.getLength();i++){
+                Node node = professorNodes.item(i);
+                professor = new Professor(node.getChildNodes().item(1).getTextContent(), node.getChildNodes()
+                        .item(3).getTextContent(), node.getChildNodes().item(5)
+                        .getTextContent(), node.getChildNodes().item(7).getTextContent());
                 professors.put(professor.toString().toLowerCase(), professor);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File professors.txt is missing! Please put the file to src/freshmen/data/ and restart the program.");
+            System.out.println("File professors.xml is missing! Please put the file to src/freshmen/data/ and restart the program.");
             System.exit(0);
         } catch (IOException e) {
-            System.out.println("File professors.txt is corrupted! Please put to the file correct values pf professors.");
+            System.out.println("File professors.xml is corrupted! Please put to the file correct values pf professors.");
+            System.exit(0);
+        } catch (ParserConfigurationException | SAXException e){
+            System.out.println("XML Parser Configuration is corrupted!");
+            e.printStackTrace();
             System.exit(0);
         }
     }
