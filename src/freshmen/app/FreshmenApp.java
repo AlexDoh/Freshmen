@@ -138,9 +138,7 @@ public class FreshmenApp {
                 System.out.print(i + 1);
                 System.out.println(".xml)");
                 String pathToStudents = reader.readLine();
-                DocumentBuilderFactory documentBuilderFactory1 = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder1 = documentBuilderFactory1.newDocumentBuilder();
-                Document documentOfStudents = documentBuilder1.parse(pathToStudents);
+                Document documentOfStudents = documentBuilder.parse(pathToStudents);
                 NodeList studentNodes = documentOfStudents.getElementsByTagName("student");
 
                 for (int j = 0; j < studentNodes.getLength(); j++) {
