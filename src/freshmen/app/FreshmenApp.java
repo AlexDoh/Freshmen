@@ -58,8 +58,7 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with students (example of data is located at " +
                     "src/freshmen/data/students.xml)");
-            String path = reader.readLine();
-            NodeList studentNodes = getDocumentInstance(path).getElementsByTagName("student");
+            NodeList studentNodes = getDocumentInstance(reader.readLine()).getElementsByTagName("student");
 
             for (int i = 0; i < studentNodes.getLength(); i++) {
                 Element element = (Element) studentNodes.item(i);
@@ -82,8 +81,7 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with professors (example of data is located at " +
                     "src/freshmen/data/professors.xml)");
-            String path = reader.readLine();
-            NodeList professorNodes = getDocumentInstance(path).getElementsByTagName("professor");
+            NodeList professorNodes = getDocumentInstance(reader.readLine()).getElementsByTagName("professor");
 
             for (int i = 0; i < professorNodes.getLength(); i++) {
                 Element element = (Element) professorNodes.item(i);
@@ -102,8 +100,7 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with groups (example of data is located at " +
                     "src/freshmen/data/groups.xml)");
-            String pathToGroups = reader.readLine();
-            NodeList groupNodes = getDocumentInstance(pathToGroups).getElementsByTagName("group");
+            NodeList groupNodes = getDocumentInstance(reader.readLine()).getElementsByTagName("group");
 
             for (int i = 0; i < groupNodes.getLength(); i++) {
                 Group group = new Group(groupNodes.item(i).getTextContent());
@@ -133,8 +130,7 @@ public class FreshmenApp {
         try {
             System.out.println("Enter path to .xml file with lectures (example of data is located at " +
                     "src/freshmen/data/lectures.xml)");
-            String pathToLectures = reader.readLine();
-            NodeList lectureNodes = getDocumentInstance(pathToLectures).getElementsByTagName("lecture");
+            NodeList lectureNodes = getDocumentInstance(reader.readLine()).getElementsByTagName("lecture");
 
             for (int i = 0; i < lectureNodes.getLength(); i++) {
                 Element element = (Element) lectureNodes.item(i);
