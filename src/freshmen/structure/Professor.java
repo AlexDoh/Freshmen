@@ -1,6 +1,6 @@
 package freshmen.structure;
 
-import java.io.IOException;
+import freshmen.app.FreshmenApp;
 
 import static freshmen.app.FreshmenApp.reader;
 
@@ -29,9 +29,8 @@ public class Professor extends Human {
                 System.exit(0);
             }
             return password;
-        } catch (IOException e) {
-            System.out.println("Input was failed. Please restart the program again.");
-            System.exit(0);
+        } catch (Exception e) {
+            FreshmenApp.handleExceptions(e);
             return null;
         }
 

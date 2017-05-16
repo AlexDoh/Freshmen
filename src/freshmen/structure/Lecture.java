@@ -1,8 +1,9 @@
 package freshmen.structure;
 
+import freshmen.app.FreshmenApp;
+
 import static freshmen.app.FreshmenApp.reader;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,9 +43,8 @@ public class Lecture {
                         System.out.println("You have entered a wrong value, please launch the program again");
                         System.exit(0);
                 }
-            } catch (IOException e) {
-                System.out.println("You have entered a wrong value, please launch the program again");
-                System.exit(0);
+            } catch (Exception e) {
+                FreshmenApp.handleExceptions(e);
             }
         }
     }
