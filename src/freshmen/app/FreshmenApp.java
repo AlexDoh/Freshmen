@@ -246,14 +246,8 @@ public class FreshmenApp {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             return documentBuilder.parse(path);
-        } catch (IOException e) {
-            System.out.println("File is missing or corrupted! Please set the path to the correct file");
-            System.exit(0);
-            return null;
-        } catch (ParserConfigurationException | SAXException e) {
-            System.out.println("XML Parser Configuration is corrupted!");
-            e.printStackTrace();
-            System.exit(0);
+        } catch (Exception e) {
+            handleExceptions(e);
             return null;
         }
     }
@@ -272,6 +266,11 @@ public class FreshmenApp {
         if(e instanceof NumberFormatException || e instanceof InputMismatchException){
             System.out.println(e.getClass().getSimpleName());
             System.out.println("You have entered a wrong value, please restart the program and try again.");
+            System.exit(0);
+        }
+        if (e instanceof ParserConfigurationException || e instanceof SAXException){
+            System.out.println(e.getClass().getSimpleName());
+            System.out.println("XML Parser Configuration exception. Make sure, that you entered corrected data.");
             System.exit(0);
         }
     }
